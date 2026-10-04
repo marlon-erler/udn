@@ -7,7 +7,7 @@ case $1 in
 	url=https://viridian.vd/VDMDI/UDN
 	;;
     gh)
-	url=https://github.com/marlon-erler/UDN
+	url=git@github.com:marlon-erler/udn.git
 	;;
 esac
 
