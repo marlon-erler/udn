@@ -8,14 +8,9 @@ The UDN project aims to provide decentralized and localhost-able infrastructure 
     - [Channels](#channels)
     - [Scalability](#scalability)
     - [Example](#example)
-- [User's guide](#users-guide)
-    - [Getting Connected](#getting-connected)
-    - [Using Apps](#using-apps)
-    - [Getting Apps](#getting-apps)
 - [Administrator's Guide](#administrators-guide)
     - [Getting Started](#getting-started)
     - [Configuration](#configuration)
-    - [TLS](#tls)
     - [Connecting Multiple Servers](#connecting-multiple-servers)
 - [App Developer's Guide](#app-developers-guide)
     - [Guidelines](#guidelines)
@@ -117,39 +112,6 @@ We could now add a third server, connect it to at least one of S1 and S2, config
 
 As you can see, there are many ways to connect multiple servers and communicate across them, all with their own pros and cons.
 
-# User's Guide
-
-## Getting Connected
-
-1. **Your administrator will give you a server address**. This address will likely look like `http://192.168.0.69` or `https://192.168.0.69`.
-2. Make sure your device is **connected to the right Wi-Fi network**.
-3. Access the server by **opening the address in a web browser**.
-4. If the address starts with `https://` you may be warned that the connection is "insecure" or "not private". This is because your administrator created and signed the server's certificate locally, and because the certificate is not registered with an official certification authority. As long as you are connecting to the server through your local network, you can safely **ignore the risk and proceed to load the site**.
-5. If you are using a smartphone, **add the site to your homescreen** (you can find this option in the share sheet or site menu), launch it, and **repeat step 3**. If you skip this, apps may refuse to connect to your server.
-6. If you are on a computer, consider trusting the server's certificate on system level if you want to install apps as PWA. This process varies based on your operating system, please google how to do this on your system.
-
-## Using Apps
-
-1. Apps are likely hosted as websites on the internet or your local network. If this is not the case, follow instructions given by the developers or your administrator.
-2. To use an app, **open it in your web browser**. Most apps will install offline support automatically so you can use them on local networks without an internet connection.
-3. If you are using a smartphone, **add the app to your homescreen and launch it**.
-4. If you are using a computer, you can **install the app as PWA** (this option may be called "Add to Dock" or "Create Shortcut"). Please google how to do this in your specific browser.
-5. If the app requests your server address, note that:
-
-- `http://` or `https://` (the secure variant) are protocols to request data and receive a single response
-- To send messages, apps use so-called WebSockets instead. Their protocol is `ws://` or `wss://` (the secure variant)
-- You will need to **replace `http` with `ws`**:
-    - `http://192.168.0.100:3000` -> `ws://192.168.0.100:3000`
-    - `https://192.168.0.200:3000` -> `wss://192.168.0.200:3000`
-
-## Getting Apps
-
-Anyone can develop apps for the UDN project. Examples of such apps are listed below. If you have developed an app for the UDN project and you want your app to be listed here, create an issue.
-
-| App Name | Description       | Links                                                                                                |
-| -------- | ----------------- | ---------------------------------------------------------------------------------------------------- |
-| Comms    | Messenger for UDN | [more info](https://github.com/marlon-erler/udn-comms/) - [install](https://udn-comms.onrender.com/) |
-
 ---
 
 # Administrator's Guide
@@ -192,18 +154,6 @@ The port and channels are self-explanatory. For servers, you'll need to provide 
 }
 ```
 
-## TLS
-
-TLS is a protocol that encrypts network traffic and ensures a secure context. Features like offline support and cryptography (needed i.e. for encryption) require this secure context.
-
-Any website loaded through a secure context will refuse to connect to insecure WebSockets, including local ones like `ws://192.168.0.100:3000`. If you want your local server to work with these apps, your server must use TLS.
-
-In local networks, you will likely need co create a self-signed certificate. This certificate is used to encrypt network traffic and identify your server.
-
-1. Change into your server directory.
-2. Create the certificate with `openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 365`. This command will ask you a few questions and create the files required by your server.
-3. Provide the passphrase via the `TLS_PASSPHRASE` environment variable (i.e. `export TLS_PASSPHRASE="my-securepass-phrase"`);
-
 ## Connecting Multiple Servers
 
 1. Add the WebSocket addresses of servers you want to connect to the `connectedServers` array in the configuration file.
@@ -228,7 +178,6 @@ As explained in the _How it works_ section, you may want to use multiple servers
 
 ## Guidelines
 
-- Connect to one server at a time
 - When supporting networks with multiple servers, differentiate between primary and secondary channels according to the explanation above.
 - Subscribe only to the primary channel, send on the primary and all secondary channels.
 - Make sure to label these channels as primary and secondary (you may translate these along with the rest of your app) as users are instructed on these terms.
@@ -237,16 +186,6 @@ As explained in the _How it works_ section, you may want to use multiple servers
 
 **Base**
 For TypeScript-based projects, you can use the [udn-frontend](https://github.com/marlon-erler/udn-frontend) package to manage the connection. This project provides methods for connecting/disconnecting, subscribing/unsubscribing, and sending messages. If you want to/need to implement this yourself, follow the manual instructions.
-
-**Interface**
-The web interface of the server itself is based on my other two projects, [carbon-mini](https://github.com/marlon-erler/carbon-mini) (preconfigured foundation for static websites, including a complete stylesheet) and [bloatless-react](https://github.com/marlon-erler/bloatless-react) (a minimalist alternative to react).
-Both of these projects are very minimal, bloat-free, and quick to get started with. I'd suggest you to build your app based on the same foundation for a consistent user experience, but you can use any framework you want.
-
-1. Download [carbon-mini](https://github.com/marlon-erler/carbon-mini) from the releases page and read the docs
-2. Install [bloatless-react](https://github.com/marlon-erler/bloatless-react) and read the docs
-3. Install [udn-frontend](https://github.com/marlon-erler/udn-frontend) and read the docs
-4. Generate your app icon [here](https://icongen.onrender.com/), move it to the `dist` directory
-5. Start developing
 
 ## The Manual Way
 
