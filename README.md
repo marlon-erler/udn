@@ -1,3 +1,10 @@
+> [!NOTE]
+> **LOCAL DEVELOPMENT**
+> 
+> This project is developed on a locally run git service.
+> 
+> The github repository is updated only in case of significant changes.
+
 # universal-decentralized-network
 
 The UDN project aims to provide decentralized and localhost-able infrastructure for messaging and communication. This infrastructure can be utilized in any scenario where data needs to be sent between devices, especially when no internet connection is present.
